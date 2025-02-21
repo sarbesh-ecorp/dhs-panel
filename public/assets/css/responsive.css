@@ -1,0 +1,29 @@
+
+/*****RESPONSIVE**************************************************************************/
+@media (min-width: 1600px) {
+    body{font-size: 1rem;}
+    .container{max-width: 1440px;}
+  }
+    
+  @media only screen and (min-width: 992px){
+  }
+  
+  @media (max-width:991.9px){
+  }
+  
+  @media (max-width:767.9px){
+  }
+  
+  @media (max-width:575.9px){
+    body{font-size: 13px; font-weight: 500;}
+    .ecis{margin-bottom: 20px;}
+  }
+  
+  @media (max-width:414px){
+    
+  }
+  @media (max-width:375px){
+    
+  }
+  @media (max-width:320px){
+  }
