@@ -14,88 +14,89 @@ export default function DHSBhankrota() {
             <div className="section">
                 <h4 className="section-title">Home</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/content-image-heading/about" title="About Content" />
-                    <Card link="/dhs-bhankrota/content-image-heading/infrastructure" title="Infrastructure" />
+                    <Card link="/dhs-bhankrota/content-image-heading/about" title="About Content" description="Heading, Content & Image" />
+                    <Card link="/dhs-bhankrota/content-image-heading/infrastructure" title="Infrastructure" description="Heading, Content & Image" />
                 </div>
             </div>
             <div className="section">
                 <h4 className="section-title">About Us</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/banner-content/our-school" title="Our School" />
-                    <Card link="/dhs-bhankrota/banner-content/vision-n-mission" title="Vision & Mission" />
-                    <Card link="/dhs-bhankrota/leadership" title="Leadership" />
-                    <Card link="/dhs-bhankrota/board-of-member" title="Board Of Member" />
+                    <Card link="/dhs-bhankrota/banner-content/our-school" title="Our School" description="Banner Image & Content"/>
+                    <Card link="/dhs-bhankrota/banner-content/vision-n-mission" title="Vision & Mission" description="Banner Image & Content"/>
+                    <Card link="/dhs-bhankrota/leadership" title="Leadership" description="Leadership"/>
+                    <Card link="/dhs-bhankrota/board-of-member" title="Board Of Member" description="Board of Member"/>
                 </div>
             </div>
 
             <div className="section">
                 <h4 className="section-title">Infrastructure</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/banner-content-image/school-campus" title="School Campus" />
-                    <Card link="/dhs-bhankrota/banner-content-image/labs" title="Labs" />
-                    <Card link="/dhs-bhankrota/banner-content-image/sports" title="Sports" />
-                    <Card link="/dhs-bhankrota/banner-content-image/other-facilities" title="Other Facilities" />
-                    <Card link="/dhs-bhankrota/content/smart-classroom" title="Smart Classroom" />
-                    <Card link="/dhs-bhankrota/banner-content-image/boarding-house" title="Boarding House" />
+                    <Card link="/dhs-bhankrota/banner-content-image/school-campus" title="School Campus" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/labs" title="Labs" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/sports" title="Sports" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/other-facilities" title="Other Facilities" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/content/smart-classroom" title="Smart Classroom" description="Only content"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/boarding-house" title="Boarding House" description="Banner Image, Content & Multiple Images"/>
                 </div>
             </div>
             <div className="section">
                 <h4 className="section-title">Academics</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/banner-content-image/scholarship" title="Scholarship"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/pedagogy" title="Pedagogy"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/curriculum" title="Curriculum"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/foreign-language" title="Foreign Language"/>
-                    <Card link="/dhs-bhankrota/content/career-counselling" title="Career Counselling"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/scholarship" title="Scholarship" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/pedagogy" title="Pedagogy" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/curriculum" title="Curriculum" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/foreign-language" title="Foreign Language" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/content/career-counselling" title="Career Counselling" description="Only content"/>
                 </div>
             </div>
             <div className="section">
                 <h4 className="section-title">Beyond Academics</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/banner-content-image/visual-art" title="Visual Art"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/performing-arts" title="Performing Arts"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/music" title="Music"/>                    
-                    <Card link="/dhs-bhankrota/banner-content/house-system" title="House System"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/sports" title="Sports"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/health-n-wellness" title="Health and Wellness"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/visual-art" title="Visual Art"description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/performing-arts" title="Performing Arts"description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/music" title="Music"description="Banner Image, Content & Multiple Images"/>                    
+                    <Card link="/dhs-bhankrota/banner-content/house-system" title="House System" description="Banner Image & Content"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/sports" title="Sports"description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/health-n-wellness" title="Health and Wellness"description="Banner Image, Content & Multiple Images"/>
                 </div>
             </div>
             <div className="section">
                 <h4 className="section-title">Boarding</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/banner-content-image/boarding-house" title="Boarding House"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/a-day-in-life-of-boarder" title="A day in life of boarder"/>
-                    <Card link="/dhs-bhankrota/content/rules-n-regulations" title="Rules & Regulations"/>
-                    <Card link="/dhs-bhankrota/content/meals" title="Meals"/>
-                    <Card link="/dhs-bhankrota/boarding-faqs" title="Boarding FAQs"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/boarding-house" title="Boarding House"description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/a-day-in-life-of-boarder" title="A day in life of boarder"description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/content/rules-n-regulations" title="Rules & Regulations" description="Only content"/>
+                    <Card link="/dhs-bhankrota/content/meals" title="Meals" description="Only content"/>
+                    <Card link="/dhs-bhankrota/boarding-faqs" title="Boarding FAQs" description="Boarding FAQs"/>
                 </div>
             </div>
             <div className="section">
                 <h4 className="section-title">Admissions</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/content/admission-information" title="Admission Information"/>
-                    <Card link="/dhs-bhankrota/content/transport" title="Transport"/>
-                    <Card link="/dhs-bhankrota/content/fees" title="Fees"/>
+                    <Card link="/dhs-bhankrota/content/admission-information" title="Admission Information" description="Only content"/>
+                    <Card link="/dhs-bhankrota/content/transport" title="Transport" description="Only content"/>
+                    <Card link="/dhs-bhankrota/content/fees" title="Fees" description="Only content"/>
                 </div>
             </div>
             <div className="section">
                 <h4 className="section-title">Quick Links</h4>
                 <div className="row">
-                    <Card link="/dhs-bhankrota/banner-content/pravaah" title="Pravaah" />
-                    <Card link="/dhs-bhankrota/banner-content/shiksha-kendra" title="Shiksha Kendra" />
-                    <Card link="/dhs-bhankrota/banner-content/learner-centric-programmes" title="Learner Centric Programmes" />
+                    <Card link="/dhs-bhankrota/banner-content/pravaah" title="Pravaah" description="Banner Image & Content"/>
+                    <Card link="/dhs-bhankrota/banner-content/shiksha-kendra" title="Shiksha Kendra" description="Banner Image & Content"/>
+                    <Card link="/dhs-bhankrota/banner-content/learner-centric-programmes" title="Learner Centric Programmes" description="Banner Image & Content"/>
                 </div>
             </div>
         </div>
     );
 }
 
-function Card({ link, title }) {
+function Card({ link, title, description }) {
     return (
         <div className="col-md-4 mb-4">
             <Link to={link} className="card custom-card text-decoration-none">
                 <div className="card-body">
                     <h5 className="card-title">{title}</h5>
+                    <h6 className="card-text mt-4">{description}</h6>
                 </div>
             </Link>
         </div>

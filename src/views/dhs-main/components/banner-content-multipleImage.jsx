@@ -165,7 +165,7 @@ export default function BannerContentMultipleImage() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="text-center mt-4">
+                <div className="mt-4">
                     <button className="btn btn-primary" onClick={handleSubmit}>
                         Submit
                     </button>

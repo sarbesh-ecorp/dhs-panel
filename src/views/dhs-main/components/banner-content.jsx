@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../../../utils/axiosInstance";
 
 export default function BannerContent() {
     const { id } = useParams();
+    const [contentLoading, setContentLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const [bannerDesktop, setBannerDesktop] = useState(null);
     const [bannerMobile, setBannerMobile] = useState(null);
     const [content, setContent] = useState("");
@@ -12,8 +15,27 @@ export default function BannerContent() {
     const navigate = useNavigate();
 
     const apiUrl = id === "history" 
-        ? "https://api.example.com/history" 
-        : "https://api.example.com/vision-mission";
+        ? "history" 
+        : "vision-mission";
+
+    useEffect(() => {
+        const fetchData = async () => {            
+            try {
+                setContentLoading(true);
+                const response = await axiosInstance.get(`/banner-content/dhs-main/${apiUrl}`);
+                console.log(response)
+                setContent(response.data[0].content);
+                setMetaTitle(response.data[0].meta_title);
+                setMetaDescription(response.data[0].meta_description);
+                setMetaKeyword(response.data[0].meta_keywords);
+            } catch (error) {
+                alert('Data not found');
+            } finally {
+                setContentLoading(false);
+            }
+        };
+        fetchData();
+    },[id]) 
     
     const handleImageChange = (event, setImage) => {
         const file = event.target.files[0];
@@ -22,24 +44,40 @@ export default function BannerContent() {
         }
     };
 
+    const convertBlobToFile = async (blobUrl, fileName) => {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        return new File([blob], fileName, { type: blob.type });
+    };   
+
     const handleSubmit = async () => {
+        const bannerDesktopFile = await convertBlobToFile(bannerDesktop, `${id} + desktop_banner.jpg`);
+        const bannerMobileFile = await convertBlobToFile(bannerMobile, `${id} + mobile_banner.jpg`);
         const formData = new FormData();
-        formData.append("bannerDesktop", bannerDesktop);
-        formData.append("bannerMobile", bannerMobile);
+        formData.append("website", "dhs-main");
+        formData.append("content_type", id);
+        formData.append("images", bannerDesktopFile);
+        formData.append("images", bannerMobileFile);
         formData.append("content", content);
-        formData.append("metaTitle", metaTitle);
-        formData.append("metaKeyword", metaKeyword);
-        formData.append("metaDescription", metaDescription);
+        formData.append("meta_title", metaTitle);
+        formData.append("meta_keywords", metaKeyword);
+        formData.append("meta_description", metaDescription);
         
         try {
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                body: formData
-            });
-            const result = await response.json();
-            console.log("Response:", result);
+            setLoading(true);
+            const response = await axiosInstance.post(`/banner-content/${apiUrl}`, formData, 
+                {
+                headers: { 
+                    "Content-Type": "multipart/form-data"
+                }}
+            );
+            alert(response.data.message);
+            navigate(-1);
         } catch (error) {
-            console.error("Error submitting data:", error);
+            console.log(error);
+            alert("Error submitting data");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -52,6 +90,8 @@ export default function BannerContent() {
             </div>
 
             <div className="banner-card">
+            {contentLoading ? <div className="loading">Loading...</div> :
+                 <>
                 {/* Banner Image Upload Section */}
                 <div className="row">
                     <div className="col-md-6">
@@ -96,9 +136,10 @@ export default function BannerContent() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="text-center mt-4">
-                    <button className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                <div className="mt-4">
+                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>
+                </>}
             </div>
         </div>
     );

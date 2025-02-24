@@ -101,7 +101,7 @@ export default function BoardMember() {
                 </div>
 
                 {/* Submit Button */}
-                <div className="text-center mt-4">
+                <div className="mt-4">
                     <button className="btn btn-primary" onClick={handleSubmit}>Submit</button>
                 </div>
             </div>

@@ -16,26 +16,26 @@ export default function DHSmain() {
             <div className="section">
                 <h4 className="section-title">Home</h4>
                 <div className="row">
-                    <Card link="/dhs-main/content/history-dhs-home" title="History Content" />
-                    <Card link="/dhs-main/content/our-approach-dhs-home" title="Our Approach Content" />
+                    <Card link="/dhs-main/content/history-dhs-home" title="History Content" description="Only content"/>
+                    <Card link="/dhs-main/content/our-approach-dhs-home" title="Our Approach Content" description="Only content" />
                 </div>
             </div>
 
             <div className="section">
                 <h4 className="section-title">Who We Are</h4>
                 <div className="row">
-                    <Card link="/dhs-main/banner-content/history" title="History" />
-                    <Card link="/dhs-main/banner-content/vision-n-mission" title="Our Vision & Mission" />
-                    <Card link="/dhs-main/board-of-member" title="Board Of Member" />
+                    <Card link="/dhs-main/banner-content/history" title="History" description="Banner Image & Content"/>
+                    <Card link="/dhs-main/banner-content/vision-n-mission" title="Our Vision & Mission" description="Banner Image & Content"/>
+                    <Card link="/dhs-main/board-of-member" title="Board Of Member" description="Board Of Member"/>
                 </div>
             </div>
 
             <div className="section">
                 <h4 className="section-title">Academics</h4>
                 <div className="row">
-                    <Card link="/dhs-main/banner-content-image/curriculum" title="Curriculum" />
-                    <Card link="/dhs-main/banner-content-image/our-approach" title="Our Approach" />
-                    <Card link="/dhs-main/banner-content-image/life-at-dharav" title="Life at Dharav" />
+                    <Card link="/dhs-main/banner-content-image/curriculum" title="Curriculum" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-main/banner-content-image/our-approach" title="Our Approach" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-main/banner-content-image/life-at-dharav" title="Life at Dharav" description="Banner Image, Content & Multiple Images"/>
                 </div>
             </div>
         </div>
@@ -43,12 +43,13 @@ export default function DHSmain() {
 }
 
 // Reusable Card Component
-function Card({ link, title }) {
+function Card({ link, title, description }) {
     return (
         <div className="col-md-4 mb-4">
             <Link to={link} className="card custom-card text-decoration-none">
                 <div className="card-body">
                     <h5 className="card-title">{title}</h5>
+                    <h6 className="card-text mt-4">{description}</h6>
                 </div>
             </Link>
         </div>

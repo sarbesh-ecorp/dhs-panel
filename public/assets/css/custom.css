@@ -1,4 +1,3 @@
-
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap');
 
 :root {
@@ -28,11 +27,13 @@ body {
   color: #fff;
 }
 
-.object-cover{
+.object-cover {
   object-fit: cover;
 }
 
 ul {
+  margin-bottom: 0;
+  padding-left: 0;
   margin-bottom: 0;
 }
 
@@ -40,33 +41,14 @@ p {
   line-height: 1.5;
 }
 
-p a{
+p a {
   color: var(--secondary-color);
   text-decoration: 1px underline;
 }
-p a:hover{
+
+p a:hover {
   color: var(--body-color);
   text-decoration: 1px underline;
-}
-
-.padding {
-    padding-top: 4rem;
-    padding-bottom: 4rem;
-}
-
-ul {
-  padding-left: 0;
-  margin-bottom: 0;
-}
-
-a,
-a:hover {
-  text-decoration: none;
-}
-
-img, video, iframe, svg {
-  width: 100%;
-  display: block;
 }
 
 .padding {
@@ -74,10 +56,22 @@ img, video, iframe, svg {
   padding-bottom: 3rem;
 }
 
+a,
+a:hover {
+  text-decoration: none;
+  color: inherit;
+}
 
-/* All pages */
-/* Header */
-.header{
+/* img,
+video,
+iframe,
+svg {
+  width: 100%;
+  display: block;
+} */
+
+/* Sidebar */
+.header {
   width: var(--header-width);
   background-image: linear-gradient(45deg, var(--primary-color), var(--primary-color));
   position: fixed;
@@ -89,7 +83,8 @@ img, video, iframe, svg {
   grid-template-rows: auto 1fr auto;
   transition: all 0.3s ease;
 }
-.logo{
+
+.logo {
   position: relative;
   z-index: 1;
   padding: 1rem;
@@ -100,45 +95,46 @@ img, video, iframe, svg {
   background-color: rgba(255, 255, 255, 0.25);
 }
 
-.navi{
+.navi {
   padding: 2rem;
 }
 
-.navi li:not(:last-of-type){
+.navi li:not(:last-of-type) {
   border-bottom: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.navi a{
+.navi a {
   color: rgba(255, 255, 255, 0.75);
   display: flex;
   align-items: center;
   gap: 10px;
   padding: 10px 0;
-}  
+}
 
-.navi a i{
+.navi a i {
   width: 20px;
   color: var(--secondary-color);
 }
-.navi a:hover span{
+
+.navi a:hover span {
   color: #fff;
 }
 
 
-.header-bottom{
+.header-bottom {
   padding: 1rem 2rem;
   background-color: rgba(255, 255, 255, 0.05);
   border-top: 1px solid rgba(255, 255, 255, 0.5);
 }
 
-.header-bottom ul{
+.header-bottom ul {
   display: flex;
   flex-direction: column;
 }
 
 
 .header.collapsed {
-  min-width: 80px; 
+  min-width: 80px;
   max-width: 80px;
   transition: all 0.3s ease;
 }
@@ -149,15 +145,17 @@ img, video, iframe, svg {
 
 .header.collapsed .logo {
   text-align: center;
-  font-size: 1.5rem; 
+  font-size: 1.5rem;
   display: block;
 }
+
 .sidebar {
   top: 0;
   left: 0;
   overflow-y: auto;
   scrollbar-width: thin;
   scrollbar-color: #3498db #f1f1f1;
+  scroll-behavior: smooth;
 }
 
 .sidebar::-webkit-scrollbar {
@@ -179,17 +177,12 @@ img, video, iframe, svg {
   background-color: #2980b9;
 }
 
-.sidebar {
-  scroll-behavior: smooth;
-}
-
-
 .sidebar_toggle {
   border: none;
   padding: 10px 10px 10px;
   font-size: 21px;
   background: var(--primary-color);
-  position: absolute;
+  position: fixed;
   top: 8px;
   left: var(--header-width);
   cursor: pointer;
@@ -198,7 +191,7 @@ img, video, iframe, svg {
   color: white;
 }
 
-/* Header */
+/* Sidebar end */
 
 .mainContent {
   width: calc(100% - var(--header-width));
@@ -226,6 +219,8 @@ img, video, iframe, svg {
   overflow: hidden;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  width: 40vh;
+  height: 20vh;
 }
 
 .custom-card .card-body {
@@ -286,7 +281,7 @@ img, video, iframe, svg {
 .image-preview img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
 }
 
 /* Buttons */
@@ -311,7 +306,7 @@ img, video, iframe, svg {
   background: #5a6268;
 }
 
-
+/* form */
 .form-label {
   font-weight: bold;
   color: #333;
@@ -350,7 +345,7 @@ img, video, iframe, svg {
 }
 
 
-/* General Layout */
+/* Dashboard */
 .dashboard-container {
   min-height: 100vh;
   background: linear-gradient(135deg, #0f172a, #1e293b);
@@ -363,7 +358,6 @@ img, video, iframe, svg {
   color: white;
 }
 
-/* Header */
 .dashboard-header {
   margin-bottom: 30px;
 }
@@ -378,7 +372,6 @@ img, video, iframe, svg {
   opacity: 0.8;
 }
 
-/* Workplace Grid */
 .workplace-grid {
   display: flex;
   justify-content: center;
@@ -387,7 +380,6 @@ img, video, iframe, svg {
   max-width: 1000px;
 }
 
-/* Workplace Card */
 .workplace-card {
   width: 280px;
   height: 250px;
@@ -427,4 +419,3 @@ img, video, iframe, svg {
   font-size: 1rem;
   opacity: 0.9;
 }
-

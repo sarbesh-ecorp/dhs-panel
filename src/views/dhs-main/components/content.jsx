@@ -1,31 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import axiosInstance from "../../../utils/axiosInstance";
 
 export default function Content() {
     const { id } = useParams();
+    const [contentLoading, setContentLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const [content, setContent] = useState("");
     const navigate = useNavigate();
 
-    const apiUrl =
-        id === "history-dhs-home"
-            ? "https://api.example.com/history"
-            : "https://api.example.com/our-approach";
+    const apiUrl = id === "history-dhs-home" ? "history" : "our-approach";
+
+    useEffect(() => {
+        const fetchData = async () => {            
+            try {
+                setContentLoading(true);
+                const response = await axiosInstance.get(`/content/dhs-main/${apiUrl}`);
+                setContent(response.data[0].content);
+            } catch (error) {
+                alert('Data not found');
+            } finally {
+                setContentLoading(false);
+            }
+        };
+        fetchData();
+    },[id])    
 
     const handleSubmit = async () => {
-        const data = { content };
-
         try {
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(data),
-            });
-            const result = await response.json();
-            console.log("Response:", result);
+            setLoading(true);
+            const response = await axiosInstance.post(`/content/${apiUrl}`, {content, website : 'dhs-main'});
+            alert(response.data.message);
+            navigate(-1);
         } catch (error) {
-            console.error("Error submitting data:", error);
+            alert("Error submitting data");
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -37,9 +47,10 @@ export default function Content() {
                 <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
             </div>
 
-            {/* Card Layout */}
             <div className="banner-card">
-                <label className="form-label">Enter Content</label>
+                 {contentLoading ? <div className="loading">Loading...</div> :
+                 <>
+                 <label className="form-label">Enter Content</label>
                 <textarea
                     className="form-control"
                     rows={5}
@@ -48,10 +59,10 @@ export default function Content() {
                     onChange={(e) => setContent(e.target.value)}
                 ></textarea>
 
-                {/* Submit Button */}
-                <div className="text-center mt-4">
-                    <button className="btn btn-primary" onClick={handleSubmit}>Submit</button>
+                <div className="mt-4">
+                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>
+                </>}
             </div>
         </div>
     );

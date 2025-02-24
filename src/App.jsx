@@ -26,6 +26,7 @@ import BhankrotaLeadership from "./views/dhs-bhankrota/components/leadership";
 import ContentImageHeadingBhankrota from "./views/dhs-bhankrota/components/content-image-heading";
 import BoardingFAQs from "./views/dhs-bhankrota/components/faq";
 import AddFAQsBhankrota from "./views/dhs-bhankrota/components/addFaq";
+import UserManagement from "./views/user-management";
 
 function AppContent() {
   const location = useLocation();
@@ -38,6 +39,7 @@ function AppContent() {
         <Route path="/" element={<Navigate to="/login" />} />
         <Route path="/login" element={<Login />} />
         <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+        <Route path="/user-management" element={<ProtectedRoute><UserManagement /></ProtectedRoute>} />
         
         {/* DHS Main */}
         <Route path="/dhs-main" element={<ProtectedRoute><DHSmain /></ProtectedRoute>} />

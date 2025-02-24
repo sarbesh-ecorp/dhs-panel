@@ -1,11 +1,11 @@
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useState} from "react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-    const [isLoggedIn, setIsLoggedIn] = useState(Cookies.get("isLoggedIn") === "true"); // ✅ Initialize from cookie
+    const [isLoggedIn, setIsLoggedIn] = useState(Cookies.get("isLoggedIn") === "true");
 
     const navigate = useNavigate();
 
