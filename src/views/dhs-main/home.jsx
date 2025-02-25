@@ -26,7 +26,7 @@ export default function DHSmain() {
                 <div className="row">
                     <Card link="/dhs-main/banner-content/history" title="History" description="Banner Image & Content"/>
                     <Card link="/dhs-main/banner-content/vision-n-mission" title="Our Vision & Mission" description="Banner Image & Content"/>
-                    <Card link="/dhs-main/board-of-member" title="Board Of Member" description="Board Of Member"/>
+                    <Card link="/dhs-main/board-of-management-list" title="Board Of Management" description="Board Of Management"/>
                 </div>
             </div>
 

@@ -1,16 +1,25 @@
-import { useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
+import ErrorToast from "../utils/error";
 
 export default function BannerContentMultipleImage() {
-    const { id } = useParams();
+    const { id } = useParams();    
+    const [contentLoading, setContentLoading] = useState(false); 
+    const [loading, setLoading] = useState(false);
     const [bannerDesktop, setBannerDesktop] = useState(null);
-    const [bannerMobile, setBannerMobile] = useState(null);
+    const [bannerMobile, setBannerMobile] = useState(null);    
+    const [originalBannerDesktop, setOriginalBannerDesktop] = useState(null);
+    const [originalBannerMobile, setOriginalBannerMobile] = useState(null);
     const [galleryImages, setGalleryImages] = useState([]);
     const [content, setContent] = useState("");
     const [metaTitle, setMetaTitle] = useState("");
     const [metaDescription, setMetaDescription] = useState("");
     const [metaKeyword, setMetaKeyword] = useState("");
+    const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
+    const location = useLocation();
+    const path = location.pathname;
+    const extractedPath = path.split("/")[1];
 
     const apiUrl =
         id === "curriculum"
@@ -18,6 +27,37 @@ export default function BannerContentMultipleImage() {
             : id === "our-approach"
             ? "https://api.example.com/vision-mission"
             : "https://api.example.com/life-at-dharav";
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setContentLoading(true);
+                const response = await axiosInstance.get(`/banner-content-multipleImage/${extractedPath}/${apiUrl}`);
+                
+                const fetchedDesktop = response.data[0].desktop_banner ? 
+                    `http://localhost:5000/uploads/banner-content-multipleImage/${response.data[0].desktop_banner}` : null;
+                const fetchedMobile = response.data[0].mobile_banner ? 
+                    `http://localhost:5000/uploads/banner-content-multipleImage/${response.data[0].mobile_banner}` : null;
+                
+                setContent(response.data[0].content);
+                setMetaTitle(response.data[0].meta_title);
+                setMetaDescription(response.data[0].meta_description);
+                setMetaKeyword(response.data[0].meta_keywords);
+                setBannerDesktop(fetchedDesktop);
+                setBannerMobile(fetchedMobile);
+    
+                // Store original images
+                setOriginalBannerDesktop(fetchedDesktop);
+                setOriginalBannerMobile(fetchedMobile);
+    
+            } catch (error) {
+                setErrorMessage('Data not found');
+            } finally {
+                setContentLoading(false);
+            }
+        };
+        fetchData();
+    }, []);
 
     const handleImageChange = (event, setImage) => {
         const file = event.target.files[0];
@@ -32,10 +72,14 @@ export default function BannerContentMultipleImage() {
         setGalleryImages((prevImages) => [...prevImages, ...imagePreviews]);
     };
 
+    const convertBlobToFile = async (blobUrl, fileName) => {
+        const response = await fetch(blobUrl);
+        const blob = await response.blob();
+        return new File([blob], fileName, { type: blob.type });
+    };
+
     const handleSubmit = async () => {
         const formData = new FormData();
-        formData.append("bannerDesktop", bannerDesktop);
-        formData.append("bannerMobile", bannerMobile);
         galleryImages.forEach((image, index) => {
             formData.append(`galleryImage${index + 1}`, image);
         });
@@ -44,21 +88,34 @@ export default function BannerContentMultipleImage() {
         formData.append("metaKeyword", metaKeyword);
         formData.append("metaDescription", metaDescription);
 
+        if (bannerDesktop && bannerDesktop.startsWith("blob:")) {
+            const bannerDesktopFile = await convertBlobToFile(bannerDesktop, `${extractedPath}-${id}-desktop_banner.jpg`);
+            formData.append("images", bannerDesktopFile);
+        }
+    
+        if (bannerMobile && bannerMobile.startsWith("blob:")) {
+            const bannerMobileFile = await convertBlobToFile(bannerMobile, `${extractedPath}-${id}-mobile_banner.jpg`);
+            formData.append("images", bannerMobileFile);
+        }
+
         try {
-            const response = await fetch(apiUrl, {
-                method: "POST",
-                body: formData,
+            setLoading(true);
+            const response = await axiosInstance.post(`/banner-content-multipleImage/${apiUrl}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" }
             });
-            const result = await response.json();
-            console.log("Response:", result);
+            alert(response.data.message);
+            navigate(-1);
         } catch (error) {
-            console.error("Error submitting data:", error);
+            console.log(error);
+            setErrorMessage("Error submitting data");
+        } finally {
+            setLoading(false);
         }
     };
 
     return (
         <div className="mainContent">
-            {/* Header Section */}
+            {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
             <div className="banner-header">
                 <h3>
                     {id === "curriculum"
@@ -71,11 +128,10 @@ export default function BannerContentMultipleImage() {
                     Back
                 </button>
             </div>
-
-            {/* Card Layout */}
             <div className="banner-card">
+                {contentLoading ? <div className="loading">Loading...</div> :
+                <>
                 <div className="row">
-                    {/* Desktop Banner */}
                     <div className="col-md-6">
                         <label className="form-label">Desktop Banner Image</label>
                         <div className="image-preview">
@@ -88,8 +144,6 @@ export default function BannerContentMultipleImage() {
                             onChange={(e) => handleImageChange(e, setBannerDesktop)}
                         />
                     </div>
-
-                    {/* Mobile Banner */}
                     <div className="col-md-6">
                         <label className="form-label">Mobile Banner Image</label>
                         <div className="image-preview">
@@ -103,8 +157,6 @@ export default function BannerContentMultipleImage() {
                         />
                     </div>
                 </div>
-
-                {/* Meta Details */}
                 <div className="row">
                     <div className="col-md-6 mt-4">
                         <label className="form-label">Meta Title</label>
@@ -116,7 +168,6 @@ export default function BannerContentMultipleImage() {
                             onChange={(e) => setMetaTitle(e.target.value)}
                         />
                     </div>
-
                     <div className="col-md-6 mt-4">
                         <label className="form-label">Meta Description</label>
                         <input
@@ -128,7 +179,6 @@ export default function BannerContentMultipleImage() {
                         />
                     </div>
                 </div>
-
                 <div className="mt-4">
                     <label className="form-label">Meta Keywords</label>
                     <textarea
@@ -139,7 +189,6 @@ export default function BannerContentMultipleImage() {
                         onChange={(e) => setMetaKeyword(e.target.value)}
                     ></textarea>
                 </div>
-
                 <div className="mt-4">
                     <label className="form-label">Content</label>
                     <textarea
@@ -150,8 +199,6 @@ export default function BannerContentMultipleImage() {
                         onChange={(e) => setContent(e.target.value)}
                     ></textarea>
                 </div>
-
-                {/* Gallery Upload */}
                 <div className="image-upload mt-4">
                     <label className="form-label">Gallery Images</label>
                     <input type="file" className="form-control mt-2" accept="image/*" multiple onChange={handleGalleryChange} />
@@ -163,13 +210,11 @@ export default function BannerContentMultipleImage() {
                         ))}
                     </div>
                 </div>
-
-                {/* Submit Button */}
                 <div className="mt-4">
-                    <button className="btn btn-primary" onClick={handleSubmit}>
-                        Submit
-                    </button>
+                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>
+                </>
+                }
             </div>
         </div>
     );

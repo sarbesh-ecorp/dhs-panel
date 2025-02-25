@@ -24,7 +24,7 @@ export default function DHSGurugram() {
                     <Card link="/dhs-gurugram/banner-content/our-school" title="Our School" description="Banner Image & Content"/>
                     <Card link="/dhs-gurugram/banner-content/vision-n-mission" title="Vision & Mission" description="Banner Image & Content"/>
                     <Card link="/dhs-gurugram/leadership" title="Leadership" description="Leadership"/>
-                    <Card link="/dhs-gurugram/board-of-member" title="Board Of Member" description="Board of Member"/>
+                    <Card link="/dhs-gurugram/board-of-management-list" title="Board Of Member" description="Board of Member"/>
                 </div>
             </div>
 

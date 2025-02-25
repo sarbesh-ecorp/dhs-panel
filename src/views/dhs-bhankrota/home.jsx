@@ -24,7 +24,7 @@ export default function DHSBhankrota() {
                     <Card link="/dhs-bhankrota/banner-content/our-school" title="Our School" description="Banner Image & Content"/>
                     <Card link="/dhs-bhankrota/banner-content/vision-n-mission" title="Vision & Mission" description="Banner Image & Content"/>
                     <Card link="/dhs-bhankrota/leadership" title="Leadership" description="Leadership"/>
-                    <Card link="/dhs-bhankrota/board-of-member" title="Board Of Member" description="Board of Member"/>
+                    <Card link="/dhs-bhankrota/board-of-management-list" title="Board Of Member" description="Board of Member"/>
                 </div>
             </div>
 

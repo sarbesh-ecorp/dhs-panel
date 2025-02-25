@@ -137,6 +137,7 @@ svg {
   min-width: 80px;
   max-width: 80px;
   transition: all 0.3s ease;
+  height: 100vh;
 }
 
 .header.collapsed .navi a span {
