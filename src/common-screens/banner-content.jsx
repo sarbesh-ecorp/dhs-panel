@@ -7,8 +7,6 @@ export default function BannerContent() {
     const { id } = useParams();
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
-    const [originalBannerDesktop, setOriginalBannerDesktop] = useState(null);
-    const [originalBannerMobile, setOriginalBannerMobile] = useState(null);
     const [bannerDesktop, setBannerDesktop] = useState(null);
     const [bannerMobile, setBannerMobile] = useState(null);
     const [content, setContent] = useState("");
@@ -45,10 +43,6 @@ export default function BannerContent() {
                 setBannerDesktop(fetchedDesktop);
                 setBannerMobile(fetchedMobile);
     
-                // Store original images
-                setOriginalBannerDesktop(fetchedDesktop);
-                setOriginalBannerMobile(fetchedMobile);
-    
             } catch (error) {
                 setErrorMessage('Data not found');
             } finally {
@@ -69,7 +63,11 @@ export default function BannerContent() {
     const convertBlobToFile = async (blobUrl, fileName) => {
         const response = await fetch(blobUrl);
         const blob = await response.blob();
-        return new File([blob], fileName, { type: blob.type });
+        
+        const mimeType = blob.type;
+        const extension = mimeType.split("/")[1];
+    
+        return new File([blob], `${fileName}.${extension}`, { type: mimeType });
     };   
 
     const handleSubmit = async () => {
@@ -82,12 +80,12 @@ export default function BannerContent() {
         formData.append("meta_description", metaDescription);
     
         if (bannerDesktop && bannerDesktop.startsWith("blob:")) {
-            const bannerDesktopFile = await convertBlobToFile(bannerDesktop, `${extractedPath}-${id}-desktop_banner.jpg`);
+            const bannerDesktopFile = await convertBlobToFile(bannerDesktop, `${extractedPath}-${id}-desktop_banner`);
             formData.append("images", bannerDesktopFile);
         }
     
         if (bannerMobile && bannerMobile.startsWith("blob:")) {
-            const bannerMobileFile = await convertBlobToFile(bannerMobile, `${extractedPath}-${id}-mobile_banner.jpg`);
+            const bannerMobileFile = await convertBlobToFile(bannerMobile, `${extractedPath}-${id}-mobile_banner`);
             formData.append("images", bannerMobileFile);
         }
     

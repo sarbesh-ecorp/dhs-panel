@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ErrorToast from "../utils/error";
+import axiosInstance from "../utils/axiosInstance";
 
 export default function BannerContentMultipleImage() {
     const { id } = useParams();    
+    const [fetchedData, setFetchedData] = useState(false);
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
     const [bannerDesktop, setBannerDesktop] = useState(null);
     const [bannerMobile, setBannerMobile] = useState(null);    
-    const [originalBannerDesktop, setOriginalBannerDesktop] = useState(null);
-    const [originalBannerMobile, setOriginalBannerMobile] = useState(null);
     const [galleryImages, setGalleryImages] = useState([]);
     const [content, setContent] = useState("");
     const [metaTitle, setMetaTitle] = useState("");
@@ -21,34 +21,28 @@ export default function BannerContentMultipleImage() {
     const path = location.pathname;
     const extractedPath = path.split("/")[1];
 
-    const apiUrl =
-        id === "curriculum"
-            ? "https://api.example.com/history"
-            : id === "our-approach"
-            ? "https://api.example.com/vision-mission"
-            : "https://api.example.com/life-at-dharav";
-
     useEffect(() => {
         const fetchData = async () => {
             try {
                 setContentLoading(true);
-                const response = await axiosInstance.get(`/banner-content-multipleImage/${extractedPath}/${apiUrl}`);
+                const response = await axiosInstance.get(`/banner-content-images/${extractedPath}/${id}`);
                 
                 const fetchedDesktop = response.data[0].desktop_banner ? 
-                    `http://localhost:5000/uploads/banner-content-multipleImage/${response.data[0].desktop_banner}` : null;
+                    `http://localhost:5000/uploads/banner-content-images/${response.data[0].desktop_banner}` : null;
                 const fetchedMobile = response.data[0].mobile_banner ? 
-                    `http://localhost:5000/uploads/banner-content-multipleImage/${response.data[0].mobile_banner}` : null;
+                    `http://localhost:5000/uploads/banner-content-images/${response.data[0].mobile_banner}` : null;
+                const fetchedGalleryImages = response.data[0].images.map(
+                    (img) => `http://localhost:5000/uploads/banner-content-images/${img}`
+                );
                 
                 setContent(response.data[0].content);
                 setMetaTitle(response.data[0].meta_title);
                 setMetaDescription(response.data[0].meta_description);
                 setMetaKeyword(response.data[0].meta_keywords);
                 setBannerDesktop(fetchedDesktop);
-                setBannerMobile(fetchedMobile);
-    
-                // Store original images
-                setOriginalBannerDesktop(fetchedDesktop);
-                setOriginalBannerMobile(fetchedMobile);
+                setBannerMobile(fetchedMobile);               
+                setGalleryImages(fetchedGalleryImages);
+                setFetchedData(true);               
     
             } catch (error) {
                 setErrorMessage('Data not found');
@@ -75,32 +69,54 @@ export default function BannerContentMultipleImage() {
     const convertBlobToFile = async (blobUrl, fileName) => {
         const response = await fetch(blobUrl);
         const blob = await response.blob();
-        return new File([blob], fileName, { type: blob.type });
-    };
+        
+        const mimeType = blob.type;
+        const extension = mimeType.split("/")[1];
+    
+        return new File([blob], `${fileName}.${extension}`, { type: mimeType });
+    };    
 
     const handleSubmit = async () => {
         const formData = new FormData();
-        galleryImages.forEach((image, index) => {
-            formData.append(`galleryImage${index + 1}`, image);
-        });
+        formData.append("website", extractedPath);
+        formData.append("content_type", id);
         formData.append("content", content);
-        formData.append("metaTitle", metaTitle);
-        formData.append("metaKeyword", metaKeyword);
-        formData.append("metaDescription", metaDescription);
+        formData.append("meta_title", metaTitle);
+        formData.append("meta_keywords", metaKeyword);
+        formData.append("meta_description", metaDescription);
 
         if (bannerDesktop && bannerDesktop.startsWith("blob:")) {
-            const bannerDesktopFile = await convertBlobToFile(bannerDesktop, `${extractedPath}-${id}-desktop_banner.jpg`);
+            const bannerDesktopFile = await convertBlobToFile(bannerDesktop, `${extractedPath}-${id}-desktop_banner`);
             formData.append("images", bannerDesktopFile);
         }
     
         if (bannerMobile && bannerMobile.startsWith("blob:")) {
-            const bannerMobileFile = await convertBlobToFile(bannerMobile, `${extractedPath}-${id}-mobile_banner.jpg`);
+            const bannerMobileFile = await convertBlobToFile(bannerMobile, `${extractedPath}-${id}-mobile_banner`);
             formData.append("images", bannerMobileFile);
+        }
+        
+        const galleryFiles = await Promise.all(
+            galleryImages.map(async (image, index) => {
+                if (image.startsWith("blob:")) {
+                    return await convertBlobToFile(image, `${extractedPath}-${id}-gallery-image-${index}`);
+                }
+                return null;
+            })
+        );
+    
+        galleryFiles.forEach((file) => {
+            if (file) {
+                formData.append("images", file);
+            }
+        }); 
+
+        for (const pair of formData.entries()) {
+            console.log(pair[0], pair[1]);
         }
 
         try {
             setLoading(true);
-            const response = await axiosInstance.post(`/banner-content-multipleImage/${apiUrl}`, formData, {
+            const response = await axiosInstance.post(`/banner-content-images/${id}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
             alert(response.data.message);
@@ -122,7 +138,10 @@ export default function BannerContentMultipleImage() {
                         ? "Curriculum"
                         : id === "our-approach"
                         ? "Our Approach"
-                        : "Life At Dharav"}
+                        : id === "life-at-dharav" ? "Life At Dharav" : id === "school-campus"
+                        ? "School Campus"
+                        : id === "labs" ? 'Labs' : id === "sports" ? 'Sports' : id === 'other-facilities' ? 'Other Facilities' : id === "primary" ? 'Primary' : id === 'pedagogy' ? 'Pedagogy' : id === 'technology' ? 'Technology' : id === 'visual-art' ? 'Visual Art' : id === 'performing-arts' ? 'Performing Arts' : id === 'music' ? 'Music' : id === 'health-n-wellness' ? 'Health and Wellness'
+                        : id === "boarding-house" ? 'Boarding House' : id === "scholarship" ? 'Scholarship' : id === 'foreign-language' ? 'Foreign Language' : id === 'sports' ? 'Sports' : id === 'boarding-house' ? 'Boarding House' : id === 'a-day-in-life-of-boarder' ? 'A Day in Life of Boarder' : 'UNDEFINED' } ({extractedPath})
                 </h3>
                 <button className="btn btn-secondary" onClick={() => navigate(-1)}>
                     Back
@@ -204,9 +223,14 @@ export default function BannerContentMultipleImage() {
                     <input type="file" className="form-control mt-2" accept="image/*" multiple onChange={handleGalleryChange} />
                     <div className="gallery-grid mt-3">
                         {galleryImages.map((img, index) => (
-                            <div key={index} className="gallery-item">
+                            <div key={index} className="gallery-item">                                
                                 <img src={img} alt={`Gallery Preview ${index + 1}`} />
-                            </div>
+                                {fetchedData && (
+                                    <div className="gallery-item-fetched">
+                                        <button className="close-btn">×</button>
+                                    </div>
+                                )}
+                            </div> 
                         ))}
                     </div>
                 </div>

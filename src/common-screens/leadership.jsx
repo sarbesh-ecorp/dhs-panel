@@ -3,13 +3,14 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ErrorToast from "../utils/error";
 import axiosInstance from "../utils/axiosInstance";
 
-export default function BoardManagement() {
+export default function Leadership() {
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [designation, setDesignation] = useState("");
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
+    const [school, setSchool] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
@@ -21,12 +22,13 @@ export default function BoardManagement() {
         const fetchData = async () => {            
             try {
                 setContentLoading(true);
-                const response = await axiosInstance.get(`/board-of-management/byID/${id}`);
+                const response = await axiosInstance.get(`/leadership/byID/${id}`);
                 setName(response.data[0].name);
                 setDesignation(response.data[0].designation);
                 setContent(response.data[0].content);
+                setSchool(response.data[0].school);
                 const fetchedImage = response.data[0].member_image ? 
-                    `http://localhost:5000/uploads/board-of-management/${response.data[0].member_image}` : null;
+                    `http://localhost:5000/uploads/leadership/${response.data[0].member_image}` : null;
                 setImage(fetchedImage);
             } catch (error) {
                 setErrorMessage('Data not found');
@@ -54,7 +56,7 @@ export default function BoardManagement() {
         const extension = mimeType.split("/")[1];
     
         return new File([blob], `${fileName}.${extension}`, { type: mimeType });
-    };    
+    }; 
 
     const handleSubmit = async () => {
         const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}-${name}`);
@@ -64,16 +66,17 @@ export default function BoardManagement() {
         formData.append("designation", designation);
         formData.append("content", content);
         formData.append("image", imageFile );
+        formData.append("school", school);
 
         try {
             setLoading(true);
             let response;
-            id === 'new' ? response = await axiosInstance.post(`/board-of-management`, formData,
+            id === 'new' ? response = await axiosInstance.post(`/leadership`, formData,
                 {
                 headers: { 
                     "Content-Type": "multipart/form-data"
                 }}
-            ) : response = await axiosInstance.put(`/board-of-management/${id}`, formData,
+            ) : response = await axiosInstance.put(`/leadership/${id}`, formData,
                 {
                 headers: { 
                     "Content-Type": "multipart/form-data"
@@ -89,25 +92,28 @@ export default function BoardManagement() {
         }
     };
 
-
     return (
     <div className="mainContent">
         {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
         <div className="banner-header">
-            <h3>Board Member ({extractedPath})</h3>
+            <h3>Leadership ({extractedPath})</h3>
             <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
-        </div>           
+        </div>
         <div className="banner-card">
             {contentLoading ? <div className="loading">Loading...</div> :
             <>
             <div className="row mt-4">
-                <div className="col-md-6">
+                <div className="col-md-4">
                     <label className="form-label">Name</label>
                     <input type="text" className="form-control" placeholder="Enter name..." value={name} onChange={(e) => setName(e.target.value)} />
                 </div>
-                <div className="col-md-6">
+                <div className="col-md-4">
                     <label className="form-label">Designation</label>
                     <input type="text" className="form-control" placeholder="Enter designation..." value={designation} onChange={(e) => setDesignation(e.target.value)} />
+                </div>
+                <div className="col-md-4">
+                    <label className="form-label">School</label>
+                    <input type="text" className="form-control" placeholder="Enter school..." value={school} onChange={(e) => setSchool(e.target.value)} />
                 </div>
             </div>
             <div className="mt-4">

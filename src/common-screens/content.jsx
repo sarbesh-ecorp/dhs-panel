@@ -49,33 +49,30 @@ export default function Content() {
     };
 
     return (
-        <div className="mainContent">
-            {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
-            {/* Header Section */}
-            <div className="banner-header">
-                <h3>{id === "history-dhs-home" ? "History (Home Page)" : id === "our-approach-dhs-home" ? 'Our Approach (Home Page)' : id === "theatre" ? "Theatre" : id === "dance" ? 'Dance' : id === "sports" ? 'Sports' : id === 'pre-nursery-to-class-1' ? 'Pre Nursery to Class 1' : id === "class-2-to-5" ? 'Class 2 to 5' : id === 'fees' ? 'Fees' : id === "smart-classroom"
+    <div className="mainContent">
+        {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
+        <div className="banner-header">
+            <h3>{id === "history-dhs-home" ? "History (Home Page)" : id === "our-approach-dhs-home" ? 'Our Approach (Home Page)' : id === "theatre" ? "Theatre" : id === "dance" ? 'Dance' : id === "sports" ? 'Sports' : id === 'pre-nursery-to-class-1' ? 'Pre Nursery to Class 1' : id === "class-2-to-5" ? 'Class 2 to 5' : id === 'fees' ? 'Fees' : id === "smart-classroom"
             ? "Smart Classroom"
             : id === "career-counselling" ? 'Career Counselling' : id === "rules-n-regulations" ? 'Rules & Regulations' : id === 'meals' ? 'Meals' : id === "admission-information" ? 'Admission Information' : id === 'fees' ? 'Fees' : id === 'transport' ? 'Transport' : 'UNDEFINED'} ({extractedPath}) </h3>
-                <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
-            </div>
-
-            <div className="banner-card">
-                 {contentLoading ? <div className="loading">Loading...</div> :
-                 <>
-                 <label className="form-label">Enter Content</label>
-                <textarea
-                    className="form-control"
-                    rows={5}
-                    placeholder="Enter content details..."
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-
-                <div className="mt-4">
-                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
-                </div>
-                </>}
-            </div>
+            <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
         </div>
+        <div className="banner-card">
+            {contentLoading ? <div className="loading">Loading...</div> :
+            <>
+            <label className="form-label">Enter Content</label>
+            <textarea
+                className="form-control"
+                rows={5}
+                placeholder="Enter content details..."
+                value={content}
+                onChange={(e) => setContent(e.target.value)}
+            ></textarea>
+            <div className="mt-4">
+                <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
+            </div>
+            </>}
+        </div>
+    </div>
     );
 }
