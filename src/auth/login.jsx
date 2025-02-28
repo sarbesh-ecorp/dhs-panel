@@ -7,6 +7,7 @@ export default function Login() {
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [validated, setValidated] = useState(false);
 
   useEffect(() => {
       document.documentElement.style.setProperty('--header-width', '0px');
@@ -14,6 +15,10 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+      if (!username || !password) {
+          setValidated(true);
+          return;
+      }
     try {
       setLoading(true);
       const response = await axiosInstance.post("/auth/login", { username, password });
@@ -33,7 +38,7 @@ export default function Login() {
     <div className="card shadow p-4 rounded" style={{ width: "400px" }}>
       <div className="card-body">
         <h3 className="text-center mb-4">Admin Login</h3>
-        <form onSubmit={handleLogin}>
+        <form noValidate onSubmit={handleLogin} className={validated ? "was-validated" : ""}>
           <div className="mb-3">
             <label className="form-label">Username</label>
             <input
@@ -44,6 +49,7 @@ export default function Login() {
               onChange={(e) => setUsername(e.target.value)}
               required
             />
+            <div className="invalid-feedback">Username is required.</div>
           </div>
           <div className="mb-3">
             <label className="form-label">Password</label>
@@ -55,6 +61,7 @@ export default function Login() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
+            <div className="invalid-feedback">Password is required.</div>
           </div>
           <button className="btn btn-primary w-100" disabled={loading}>{loading ? 'please wait' : 'Login'}</button>
         </form>

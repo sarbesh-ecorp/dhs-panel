@@ -16,14 +16,13 @@ import ManagementList from "./common-screens/management-list";
 import LeadershipList from "./common-screens/leadership-list";
 import Leadership from "./common-screens/leadership";
 import Enquiry from "./views/enquiry";
-import Cookies from "js-cookie";
 
 function AppContent() {
   const location = useLocation();
   const hideSidebar = location.pathname === "/login";
   const path = location.pathname;
   const extractedPath = path.split("/")[1];
-  const accessRights = Cookies.get("access") ? Cookies.get("access").split(",") : [];
+  const accessRights = localStorage.getItem("access") ? localStorage.getItem("access").split(",") : [];
 
   // if (!accessRights.includes(extractedPath) && extractedPath !== "login") {
   //   return <Navigate to="/login" replace />;

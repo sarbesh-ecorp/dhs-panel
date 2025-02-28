@@ -12,7 +12,8 @@ export default function AddFAQs() {
     const extractedPath = path.split("/")[1];
     const {id} = useParams();
     const navigate = useNavigate();
-    const [faqs, setFaqs] = useState([{ question: "", answer: "", website: extractedPath}]);
+    const [faqs, setFaqs] = useState([{ question: "", answer: "", website: extractedPath }]);
+    const [errors, setErrors] = useState([]);
 
     useEffect(() => {
         const fetchData = async () => {            
@@ -29,7 +30,7 @@ export default function AddFAQs() {
         if (id !== 'new') {
             fetchData();        
         }        
-    },[id])
+    },[id]);
 
     const handleAddMore = () => {
         setFaqs([...faqs, { question: "", answer: "", website: extractedPath }]);
@@ -47,8 +48,27 @@ export default function AddFAQs() {
         setFaqs(updatedFaqs);
     };
 
+    const validateForm = () => {
+        const newErrors = faqs.map((faq) => {
+            let error = {};
+            if (!faq.question.trim()) error.question = "Question is required";
+            else if (faq.question.length < 5) error.question = "Question must be at least 5 characters";
+            else if (faq.question.length > 200) error.question = "Question is too long (max 200 characters)";
+
+            if (!faq.answer.trim()) error.answer = "Answer is required";
+            else if (faq.answer.length > 1000) error.answer = "Answer is too long (max 1000 characters)";
+
+            return error;
+        });
+
+        setErrors(newErrors);
+        return newErrors.every((error) => Object.keys(error).length === 0);
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!validateForm()) return;
+
         try {
             setLoading(true);
             let response;
@@ -85,10 +105,11 @@ export default function AddFAQs() {
                                 name="question"
                                 value={faq.question}
                                 onChange={(e) => handleChange(e, index)}
-                                className="form-control"
+                                className={`form-control ${errors[index]?.question ? 'is-invalid' : ''}`}
                                 placeholder="Enter the question"
                                 required
                             />
+                            {errors[index]?.question && <div className="invalid-feedback">{errors[index].question}</div>}
                         </div>
                         <div className="mb-3">
                             <label htmlFor={`answer-${index}`} className="form-label">Answer</label>
@@ -97,11 +118,12 @@ export default function AddFAQs() {
                                 name="answer"
                                 value={faq.answer}
                                 onChange={(e) => handleChange(e, index)}
-                                className="form-control"
+                                className={`form-control ${errors[index]?.answer ? 'is-invalid' : ''}`}
                                 placeholder="Enter the answer"
                                 rows="3"
                                 required
                             ></textarea>
+                            {errors[index]?.answer && <div className="invalid-feedback">{errors[index].answer}</div>}
                         </div>
 
                         {faqs.length > 1 && (
@@ -116,13 +138,13 @@ export default function AddFAQs() {
                     </div>
                 ))}
 
-                {id === 'new' ? <button
+                {id === 'new' && <button
                     type="button"
                     className="btn btn-primary mb-3 ms-auto d-flex"
                     onClick={handleAddMore}
                 >
                     Add More FAQ
-                </button> : ''}
+                </button>}
                 <div className="mt-4">
                     <button className="btn btn-success" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>                    

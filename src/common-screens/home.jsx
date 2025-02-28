@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+import GalleryModal from "../components/galleryModel";
 
 
 export default function DHSmain() {
@@ -37,7 +38,8 @@ export default function DHSmain() {
                     <Card link="/dhs-main/banner-content-image/our-approach" title="Our Approach" description="Banner Image, Content & Multiple Images"/>
                     <Card link="/dhs-main/banner-content-image/life-at-dharav" title="Life at Dharav" description="Banner Image, Content & Multiple Images"/>
                 </div>
-            </div></>)}
+            </div>
+            </>)}
             {extractedPath === 'dhs-gurugram' && (<>
             <div className="section">
                 <h4 className="section-title">Home</h4>
@@ -176,14 +178,38 @@ export default function DHSmain() {
 }
 
 function Card({ link, title, description }) {
+    const [showModal, setShowModal] = useState(false);
+    const [pressed, setPressed] = useState(false);
+
+    const handleShow = () => {setShowModal(true); setPressed(true)};
+    const handleClose = () => {setShowModal(false); setPressed(false)};
+    
     return (
-        <div className="col-md-4 mb-4">
-            <Link to={link} className="card custom-card text-decoration-none">
-                <div className="card-body">
-                    <h5 className="card-title">{title}</h5>
-                    <h6 className="card-text mt-4">{description}</h6>
+    <div className="col-md-4 mb-4">
+        {description === 'Banner Image, Content & Multiple Images' ? (
+            <div className="card custom-card">
+                <Link to={link} className="text-decoration-none">
+                    <div className="card-body">
+                        <h5 className="card-title">{title}</h5>
+                        <h6 className="card-text mt-4">{description}</h6>
+                    </div>
+                </Link>
+                <div className="gallery-button">
+                    <div className="mt-4">
+                        <button className="btn gallery-btn" onClick={handleShow}>Gallery Images</button>
+                    </div>
                 </div>
-            </Link>
-        </div>
+            </div>
+        ) : (
+        <Link to={link} className="card custom-card text-decoration-none">
+            <div className="card-body">
+                <h5 className="card-title">{title}</h5>
+                <h6 className="card-text mt-4">{description}</h6>
+            </div>
+        </Link>
+    )}
+    {pressed && 
+    <GalleryModal show={showModal} handleClose={handleClose} link={link} />}
+    </div>
     );
 }

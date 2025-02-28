@@ -4,7 +4,7 @@ import ErrorToast from "../utils/error";
 import axiosInstance from "../utils/axiosInstance";
 
 export default function Leadership() {
-    const [contentLoading, setContentLoading] = useState(false); 
+    const [contentLoading, setContentLoading] = useState(false);
     const [loading, setLoading] = useState(false);
     const [name, setName] = useState("");
     const [designation, setDesignation] = useState("");
@@ -12,14 +12,15 @@ export default function Leadership() {
     const [image, setImage] = useState(null);
     const [school, setSchool] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
+    const [validated, setValidated] = useState(false);
     const navigate = useNavigate();
     const location = useLocation();
     const path = location.pathname;
     const extractedPath = path.split("/")[1];
-    const {id} = useParams();
+    const { id } = useParams();
 
     useEffect(() => {
-        const fetchData = async () => {            
+        const fetchData = async () => {
             try {
                 setContentLoading(true);
                 const response = await axiosInstance.get(`/leadership/byID/${id}`);
@@ -37,9 +38,9 @@ export default function Leadership() {
             }
         };
         if (id !== 'new') {
-            fetchData();        
-        }        
-    },[id])
+            fetchData();
+        }
+    }, [id]);
 
     const handleImageChange = (event) => {
         const file = event.target.files[0];
@@ -56,32 +57,32 @@ export default function Leadership() {
         const extension = mimeType.split("/")[1];
     
         return new File([blob], `${fileName}.${extension}`, { type: mimeType });
-    }; 
+    };
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!name || !designation || !content || !school || !image) {
+            setValidated(true);
+            return;
+        }
+
         const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}-${name}`);
         const formData = new FormData();
         formData.append("website", extractedPath);
         formData.append("name", name);
         formData.append("designation", designation);
         formData.append("content", content);
-        formData.append("image", imageFile );
+        formData.append("image", imageFile);
         formData.append("school", school);
 
         try {
             setLoading(true);
             let response;
-            id === 'new' ? response = await axiosInstance.post(`/leadership`, formData,
-                {
-                headers: { 
-                    "Content-Type": "multipart/form-data"
-                }}
-            ) : response = await axiosInstance.put(`/leadership/${id}`, formData,
-                {
-                headers: { 
-                    "Content-Type": "multipart/form-data"
-                }}
-            );
+            id === 'new' ? response = await axiosInstance.post(`/leadership`, formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            }) : response = await axiosInstance.put(`/leadership/${id}`, formData, {
+                headers: { "Content-Type": "multipart/form-data" }
+            });
             alert(response.data.message);
             navigate(-1);
         } catch (error) {
@@ -93,46 +94,51 @@ export default function Leadership() {
     };
 
     return (
-    <div className="mainContent">
-        {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
-        <div className="banner-header">
-            <h3>Leadership ({extractedPath})</h3>
-            <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
+        <div className="mainContent">
+            {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
+            <div className="banner-header">
+                <h3>Leadership ({extractedPath})</h3>
+                <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
+            </div>
+            <div className="banner-card">
+                {contentLoading ? <div className="loading">Loading...</div> :
+                    <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
+                        <div className="row mt-4">
+                            <div className="col-md-4">
+                                <label className="form-label">Name</label>
+                                <input type="text" className="form-control" placeholder="Enter name..." value={name} onChange={(e) => setName(e.target.value)} required />
+                                <div className="invalid-feedback">Name is required.</div>
+                            </div>
+                            <div className="col-md-4">
+                                <label className="form-label">Designation</label>
+                                <input type="text" className="form-control" placeholder="Enter designation..." value={designation} onChange={(e) => setDesignation(e.target.value)} required />
+                                <div className="invalid-feedback">Designation is required.</div>
+                            </div>
+                            <div className="col-md-4">
+                                <label className="form-label">School</label>
+                                <input type="text" className="form-control" placeholder="Enter school..." value={school} onChange={(e) => setSchool(e.target.value)} required />
+                                <div className="invalid-feedback">School is required.</div>
+                            </div>
+                        </div>
+                        <div className="mt-4">
+                            <label className="form-label">Details (Semi-colon-Separated)</label>
+                            <textarea className="form-control" rows={3} placeholder="Enter details separated by semi-colons..." value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                            <div className="invalid-feedback">Details are required.</div>
+                        </div>
+                        <div className="image-upload mt-4 text-center">
+                            <label className="form-label">Upload Image</label>
+                            <div className="image-preview">
+                                {image && <img src={image} alt="Preview" />}
+                            </div>
+                            <input type="file" className="form-control mt-2" accept="image/*" onChange={handleImageChange} required />
+                            <div className="invalid-feedback">Image is required.</div>
+                        </div>
+                        <div className="mt-4">
+                            <button className="btn btn-primary" type="submit" disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
+                        </div>
+                    </form>
+                }
+            </div>
         </div>
-        <div className="banner-card">
-            {contentLoading ? <div className="loading">Loading...</div> :
-            <>
-            <div className="row mt-4">
-                <div className="col-md-4">
-                    <label className="form-label">Name</label>
-                    <input type="text" className="form-control" placeholder="Enter name..." value={name} onChange={(e) => setName(e.target.value)} />
-                </div>
-                <div className="col-md-4">
-                    <label className="form-label">Designation</label>
-                    <input type="text" className="form-control" placeholder="Enter designation..." value={designation} onChange={(e) => setDesignation(e.target.value)} />
-                </div>
-                <div className="col-md-4">
-                    <label className="form-label">School</label>
-                    <input type="text" className="form-control" placeholder="Enter school..." value={school} onChange={(e) => setSchool(e.target.value)} />
-                </div>
-            </div>
-            <div className="mt-4">
-                <label className="form-label">Details (Semi-colon-Separated)</label>
-                <textarea className="form-control" rows={3} placeholder="Enter details separated by semi-colons..." value={content} onChange={(e) => setContent(e.target.value)}></textarea>
-            </div>
-            <div className="image-upload mt-4 text-center">
-                <label className="form-label">Upload Image</label>
-                <div className="image-preview">
-                    {image && <img src={image} alt="Preview" />}
-                </div>
-                <input type="file" className="form-control mt-2" accept="image/*" onChange={handleImageChange} />
-            </div>
-            <div className="mt-4">
-                <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
-            </div>
-            </>
-            }
-        </div>
-    </div>
     );
 }

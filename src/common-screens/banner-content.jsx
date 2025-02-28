@@ -13,6 +13,7 @@ export default function BannerContent() {
     const [metaTitle, setMetaTitle] = useState("");
     const [metaDescription, setMetaDescription] = useState("");
     const [metaKeyword, setMetaKeyword] = useState("");    
+    const [validated, setValidated] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
@@ -70,7 +71,12 @@ export default function BannerContent() {
         return new File([blob], `${fileName}.${extension}`, { type: mimeType });
     };   
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!metaTitle || !metaKeyword || !content || !metaDescription || !bannerDesktop || !bannerMobile) {
+            setValidated(true);
+            return;
+        }
         const formData = new FormData();
         formData.append("website", extractedPath);
         formData.append("content_type", id);
@@ -116,14 +122,15 @@ export default function BannerContent() {
 
             <div className="banner-card">
                 {contentLoading ? <div className="loading">Loading...</div> :
-                <>
+                <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
                 <div className="row">
                     <div className="col-md-6">
                         <label className="form-label">Desktop Banner Image</label>
                         <div className="image-preview">
                             {bannerDesktop && <img src={bannerDesktop} alt="Desktop Preview" />}
                         </div>
-                        <input type="file" className="form-control" accept="image/*" onChange={(e) => handleImageChange(e, setBannerDesktop)} />
+                        <input type="file" className="form-control" accept="image/*" onChange={(e) => handleImageChange(e, setBannerDesktop)} required/>
+                        <div className="invalid-feedback">Desktop banner is required.</div>
                     </div>
                     
                     <div className="col-md-6">
@@ -131,32 +138,37 @@ export default function BannerContent() {
                         <div className="image-preview">
                             {bannerMobile && <img src={bannerMobile} alt="Mobile Preview" />}
                         </div>
-                        <input type="file" className="form-control" accept="image/*" onChange={(e) => handleImageChange(e, setBannerMobile)} />
+                        <input type="file" className="form-control" accept="image/*" onChange={(e) => handleImageChange(e, setBannerMobile)} required/>
+                        <div className="invalid-feedback">Mobile banner is required.</div>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-6 mt-4">
                         <label className="form-label">Meta Title</label>
-                        <input type="text" className="form-control" placeholder="Enter meta title..." value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} />
+                        <input type="text" className="form-control" placeholder="Enter meta title..." value={metaTitle} onChange={(e) => setMetaTitle(e.target.value)} required/>
+                        <div className="invalid-feedback">Meta title is required.</div>
                     </div>
 
                     <div className="col-md-6 mt-4">
                         <label className="form-label">Meta Description</label>
-                        <input type="text" className="form-control" placeholder="Enter meta description..." value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} />
+                        <input type="text" className="form-control" placeholder="Enter meta description..." value={metaDescription} onChange={(e) => setMetaDescription(e.target.value)} required/>
+                        <div className="invalid-feedback">Meta description is required.</div>
                     </div>
                 </div>
                 <div className="mt-4">
                     <label className="form-label">Meta Keywords</label>
-                    <textarea className="form-control" rows={2} placeholder="Enter meta keywords..." value={metaKeyword} onChange={(e) => setMetaKeyword(e.target.value)}></textarea>
+                    <textarea className="form-control" rows={2} placeholder="Enter meta keywords..." value={metaKeyword} onChange={(e) => setMetaKeyword(e.target.value)} required></textarea>
+                    <div className="invalid-feedback">Meta Keyword is required.</div>
                 </div>                
                 <div className="mt-4">
                     <label className="form-label">Content</label>
-                    <textarea className="form-control" rows={5} placeholder="Enter content details..." value={content} onChange={(e) => setContent(e.target.value)}></textarea>
+                    <textarea className="form-control" rows={5} placeholder="Enter content details..." value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                    <div className="invalid-feedback">Content is required.</div>
                 </div>
                 <div className="mt-4">
-                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
+                    <button className="btn btn-primary" type="submit" disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>
-                </>
+                </form>
                 }
             </div>
         </div>

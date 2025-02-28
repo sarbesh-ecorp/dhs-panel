@@ -5,18 +5,17 @@ import axiosInstance from "../utils/axiosInstance";
 
 export default function BannerContentMultipleImage() {
     const { id } = useParams();    
-    const [fetchedData, setFetchedData] = useState(false);
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
     const [bannerDesktop, setBannerDesktop] = useState(null);
     const [bannerMobile, setBannerMobile] = useState(null);    
-    const [galleryImages, setGalleryImages] = useState([]);
     const [content, setContent] = useState("");
     const [metaTitle, setMetaTitle] = useState("");
     const [metaDescription, setMetaDescription] = useState("");
     const [metaKeyword, setMetaKeyword] = useState("");
     const [errorMessage, setErrorMessage] = useState("");
-    const navigate = useNavigate();
+    const navigate = useNavigate();    
+    const [validated, setValidated] = useState(false);
     const location = useLocation();
     const path = location.pathname;
     const extractedPath = path.split("/")[1];
@@ -31,9 +30,6 @@ export default function BannerContentMultipleImage() {
                     `http://localhost:5000/uploads/banner-content-images/${response.data[0].desktop_banner}` : null;
                 const fetchedMobile = response.data[0].mobile_banner ? 
                     `http://localhost:5000/uploads/banner-content-images/${response.data[0].mobile_banner}` : null;
-                const fetchedGalleryImages = response.data[0].images.map(
-                    (img) => `http://localhost:5000/uploads/banner-content-images/${img}`
-                );
                 
                 setContent(response.data[0].content);
                 setMetaTitle(response.data[0].meta_title);
@@ -41,11 +37,9 @@ export default function BannerContentMultipleImage() {
                 setMetaKeyword(response.data[0].meta_keywords);
                 setBannerDesktop(fetchedDesktop);
                 setBannerMobile(fetchedMobile);               
-                setGalleryImages(fetchedGalleryImages);
-                setFetchedData(true);               
-    
             } catch (error) {
                 setErrorMessage('Data not found');
+                console.log(error)
             } finally {
                 setContentLoading(false);
             }
@@ -59,13 +53,7 @@ export default function BannerContentMultipleImage() {
             setImage(URL.createObjectURL(file));
         }
     };
-
-    const handleGalleryChange = (event) => {
-        const files = Array.from(event.target.files);
-        const imagePreviews = files.map((file) => URL.createObjectURL(file));
-        setGalleryImages((prevImages) => [...prevImages, ...imagePreviews]);
-    };
-
+    
     const convertBlobToFile = async (blobUrl, fileName) => {
         const response = await fetch(blobUrl);
         const blob = await response.blob();
@@ -76,7 +64,12 @@ export default function BannerContentMultipleImage() {
         return new File([blob], `${fileName}.${extension}`, { type: mimeType });
     };    
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!content || !metaTitle || !content || !metaKeyword || !metaDescription || !bannerDesktop || !bannerMobile) {
+            setValidated(true);
+            return;
+        }
         const formData = new FormData();
         formData.append("website", extractedPath);
         formData.append("content_type", id);
@@ -95,25 +88,7 @@ export default function BannerContentMultipleImage() {
             formData.append("images", bannerMobileFile);
         }
         
-        const galleryFiles = await Promise.all(
-            galleryImages.map(async (image, index) => {
-                if (image.startsWith("blob:")) {
-                    return await convertBlobToFile(image, `${extractedPath}-${id}-gallery-image-${index}`);
-                }
-                return null;
-            })
-        );
-    
-        galleryFiles.forEach((file) => {
-            if (file) {
-                formData.append("images", file);
-            }
-        }); 
-
-        for (const pair of formData.entries()) {
-            console.log(pair[0], pair[1]);
-        }
-
+        
         try {
             setLoading(true);
             const response = await axiosInstance.post(`/banner-content-images/${id}`, formData, {
@@ -149,7 +124,7 @@ export default function BannerContentMultipleImage() {
             </div>
             <div className="banner-card">
                 {contentLoading ? <div className="loading">Loading...</div> :
-                <>
+                <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
                 <div className="row">
                     <div className="col-md-6">
                         <label className="form-label">Desktop Banner Image</label>
@@ -161,7 +136,9 @@ export default function BannerContentMultipleImage() {
                             className="form-control mt-2"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, setBannerDesktop)}
+                            required
                         />
+                        <div className="invalid-feedback">Desktop Banner is required.</div>
                     </div>
                     <div className="col-md-6">
                         <label className="form-label">Mobile Banner Image</label>
@@ -173,7 +150,9 @@ export default function BannerContentMultipleImage() {
                             className="form-control mt-2"
                             accept="image/*"
                             onChange={(e) => handleImageChange(e, setBannerMobile)}
+                            required
                         />
+                        <div className="invalid-feedback">Mobile Banner is required.</div>
                     </div>
                 </div>
                 <div className="row">
@@ -185,7 +164,9 @@ export default function BannerContentMultipleImage() {
                             placeholder="Enter meta title..."
                             value={metaTitle}
                             onChange={(e) => setMetaTitle(e.target.value)}
+                            required
                         />
+                        <div className="invalid-feedback">Meta title is required.</div>
                     </div>
                     <div className="col-md-6 mt-4">
                         <label className="form-label">Meta Description</label>
@@ -195,7 +176,9 @@ export default function BannerContentMultipleImage() {
                             placeholder="Enter meta description..."
                             value={metaDescription}
                             onChange={(e) => setMetaDescription(e.target.value)}
+                            required
                         />
+                        <div className="invalid-feedback">Meta description is required.</div>
                     </div>
                 </div>
                 <div className="mt-4">
@@ -206,7 +189,9 @@ export default function BannerContentMultipleImage() {
                         placeholder="Enter meta keywords..."
                         value={metaKeyword}
                         onChange={(e) => setMetaKeyword(e.target.value)}
+                        required
                     ></textarea>
+                    <div className="invalid-feedback">Meta keywords is required.</div>
                 </div>
                 <div className="mt-4">
                     <label className="form-label">Content</label>
@@ -216,28 +201,14 @@ export default function BannerContentMultipleImage() {
                         placeholder="Enter details..."
                         value={content}
                         onChange={(e) => setContent(e.target.value)}
+                        required
                     ></textarea>
-                </div>
-                <div className="image-upload mt-4">
-                    <label className="form-label">Gallery Images</label>
-                    <input type="file" className="form-control mt-2" accept="image/*" multiple onChange={handleGalleryChange} />
-                    <div className="gallery-grid mt-3">
-                        {galleryImages.map((img, index) => (
-                            <div key={index} className="gallery-item">                                
-                                <img src={img} alt={`Gallery Preview ${index + 1}`} />
-                                {fetchedData && (
-                                    <div className="gallery-item-fetched">
-                                        <button className="close-btn">×</button>
-                                    </div>
-                                )}
-                            </div> 
-                        ))}
-                    </div>
+                    <div className="invalid-feedback">Content is required.</div>
                 </div>
                 <div className="mt-4">
-                    <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
+                    <button className="btn btn-primary" type="submit" disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>
-                </>
+                </form>
                 }
             </div>
         </div>

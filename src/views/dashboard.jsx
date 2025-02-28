@@ -1,11 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { Briefcase, Contact2Icon, Globe, MapPin, User2Icon } from "lucide-react";
-import Cookies from "js-cookie";
 
 export default function Dashboard() {
 
-    const accessRights = Cookies.get("access") ? Cookies.get("access").split(",") : [];
+    const accessRights = localStorage.getItem("access") ? localStorage.getItem("access").split(",") : [];
 
     return (
         <div className="dashboard-container mainContent">
@@ -55,15 +54,11 @@ export default function Dashboard() {
 }
 
 function WorkplaceCard({ link, title, description, icon}) {
-    return (
-        <>
-           
-                <Link to={`${link}`} className="workplace-card">
-                    <div className="card-icon">{icon}</div>
-                    <h3>{title}</h3>
-                    <p>{description}</p>
-                </Link>
-            
-        </>
+    return (   
+    <Link to={`${link}`} className="workplace-card">
+        <div className="card-icon">{icon}</div>
+        <h3>{title}</h3>
+        <p>{description}</p>
+    </Link>        
     );
 }

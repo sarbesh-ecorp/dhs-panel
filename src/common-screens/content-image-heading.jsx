@@ -10,6 +10,7 @@ export default function ContentImageHeading() {
     const [heading, setHeading] = useState("");
     const [content, setContent] = useState("");
     const [image, setImage] = useState(null);
+    const [validated, setValidated] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
@@ -54,7 +55,12 @@ export default function ContentImageHeading() {
         return new File([blob], `${fileName}.${extension}`, { type: mimeType });
     }; 
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!heading || !content || !image) {
+            setValidated(true);
+            return;
+        }
         const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}`);
         const formData = new FormData();
         formData.append("website", extractedPath);
@@ -87,26 +93,29 @@ export default function ContentImageHeading() {
             </div>
             <div className="banner-card">
                 {contentLoading ? <div className="loading">Loading...</div> :
-                <>
+                <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
                 <div className="col-md-6">
                     <label className="form-label">Heading</label>
-                    <input type="text" className="form-control" placeholder="Enter heading..." value={heading} onChange={(e) => setHeading(e.target.value)} />
+                    <input type="text" className="form-control" placeholder="Enter heading..." value={heading} onChange={(e) => setHeading(e.target.value)} required/>
+                    <div className="invalid-feedback">Heading is required.</div>
                 </div>
                 <div className="mt-4">
                     <label className="form-label">Content</label>
-                    <textarea className="form-control" rows={3} placeholder="Enter content..." value={content} onChange={(e) => setContent(e.target.value)}></textarea>
+                    <textarea className="form-control" rows={3} placeholder="Enter content..." value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
+                    <div className="invalid-feedback">Content is required.</div>
                 </div>
                 <div className="image-upload mt-4 text-center">
                     <label className="form-label">Upload Image</label>
                     <div className="image-preview">
                         {image && <img src={image} alt="Preview" />}
                     </div>
-                    <input type="file" className="form-control mt-2" accept="image/*" onChange={handleImageChange} />
+                    <input type="file" className="form-control mt-2" accept="image/*" onChange={handleImageChange} required/>
+                    <div className="invalid-feedback">Image is required.</div>
                 </div>
                 <div className="mt-4">
                     <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
                 </div>
-                </>
+                </form>
                 }
             </div>
         </div>

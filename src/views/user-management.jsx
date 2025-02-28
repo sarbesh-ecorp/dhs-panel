@@ -12,6 +12,7 @@ export default function UserManagement() {
     const [errorMessage, setErrorMessage] = useState("");
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
+    const [validated, setValidated] = useState(false);
     
     const accessOptions = [
         { value: "dhs-main", label: "DHS MAIN" },
@@ -47,6 +48,10 @@ export default function UserManagement() {
     
     const handleSubmit = async (e) => {
         e.preventDefault();
+        if (!newUser.username || !newUser.password || !newUser.access) {
+            setValidated(true);
+            return;
+        }
         try {
             setLoading(true);
             const response = await axiosInstance.post("/auth/register", newUser);
@@ -127,15 +132,20 @@ export default function UserManagement() {
                                 <span>&times;</span>
                             </button>
                         </div>
-                        <div className="modal-body">
-                            <input type="text" name="username" placeholder="Username" value={newUser.username.trim()} onChange={handleInputChange} className="form-control mb-2" />
-                            <input type="password" name="password" placeholder="Password" value={newUser.password.trim()} onChange={handleInputChange} className="form-control mb-2" />
-                            <Select options={accessOptions} isMulti onChange={handleAccessChange} className="mb-2" />
-                        </div>
-                        <div className="modal-footer">
-                            <button className="btn btn-success" onClick={handleSubmit}disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
-                            <button className="btn btn-secondary" onClick={() => setModalIsOpen(false)}>Cancel</button>
-                        </div>
+                        <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
+                            <div className="modal-body">
+                                <input type="text" name="username" placeholder="Username" value={newUser.username.trim()} onChange={handleInputChange} className="form-control mb-2" required/>
+                                <div className="invalid-feedback">Username is required.</div>
+                                <input type="password" name="password" placeholder="Password" value={newUser.password.trim()} onChange={handleInputChange} className="form-control mb-2"required />
+                                <div className="invalid-feedback">Password is required.</div>
+                                <Select options={accessOptions} isMulti onChange={handleAccessChange} className="mb-2" required/>
+                                <div className="invalid-feedback">Access items are required.</div>
+                            </div>
+                            <div className="modal-footer">
+                                <button className="btn btn-success" type='submit' disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
+                                <button className="btn btn-secondary" onClick={() => setModalIsOpen(false)}>Cancel</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>

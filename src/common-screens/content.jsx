@@ -8,6 +8,7 @@ export default function Content() {
     const [errorMessage, setErrorMessage] = useState("");
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
+    const [validated, setValidated] = useState(false);
     const [content, setContent] = useState("");
     const navigate = useNavigate();
     const location = useLocation();
@@ -35,7 +36,12 @@ export default function Content() {
         fetchData();
     },[id])    
 
-    const handleSubmit = async () => {
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        if (!content) {
+            setValidated(true);
+            return;
+        }
         try {
             setLoading(true);
             const response = await axiosInstance.post(`/content/${apiUrl}`, {content, website : extractedPath});
@@ -59,7 +65,7 @@ export default function Content() {
         </div>
         <div className="banner-card">
             {contentLoading ? <div className="loading">Loading...</div> :
-            <>
+            <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
             <label className="form-label">Enter Content</label>
             <textarea
                 className="form-control"
@@ -67,11 +73,13 @@ export default function Content() {
                 placeholder="Enter content details..."
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
+                required
             ></textarea>
+            <div className="invalid-feedback">Content is required.</div>
             <div className="mt-4">
                 <button className="btn btn-primary" onClick={handleSubmit} disabled={loading}>{loading ? 'Submitting' : 'Submit'}</button>
             </div>
-            </>}
+            </form>}
         </div>
     </div>
     );
