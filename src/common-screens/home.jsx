@@ -45,7 +45,7 @@ export default function DHSmain() {
                 <h4 className="section-title">Home</h4>
                 <div className="row">
                     <Card link="/dhs-gurugram/content-image-heading/about" title="About Content" description="Heading, Content & Image"/>
-                    <Card link="/dhs-gurugram/content-image-heading/infrastructure" title="Infrastructure" description="Heading, Content & Image"/>
+                    <Card link="/dhs-gurugram/infrastructure" title="Infrastructure" description="Heading, Content & Image"/>
                 </div>
             </div>
             <div className="section">
@@ -84,7 +84,7 @@ export default function DHSmain() {
                     <Card link="/dhs-gurugram/banner-content-image/music" title="Music" description="Banner Image, Content & Multiple Images"/>                    
                     <Card link="/dhs-gurugram/content/dance" title="Dance" description="Only content"/>
                     <Card link="/dhs-gurugram/content/sports" title="Sports" description="Only content"/>
-                    <Card link="/dhs-gurugram/banner-content-image/health-n-wellness" title="Health and Wellness" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-gurugram/banner-content-image/health-and-well-being" title="Health and Wellness" description="Banner Image, Content & Multiple Images"/>
                 </div>
             </div>
             <div className="section">
@@ -102,7 +102,7 @@ export default function DHSmain() {
                 <h4 className="section-title">Home</h4>
                 <div className="row">
                     <Card link="/dhs-bhankrota/content-image-heading/about" title="About Content" description="Heading, Content & Image" />
-                    <Card link="/dhs-bhankrota/content-image-heading/infrastructure" title="Infrastructure" description="Heading, Content & Image" />
+                    <Card link="/dhs-bhankrota/infrastructure" title="Infrastructure" description="Heading, Content & Image" />
                 </div>
             </div>
             <div className="section">
@@ -129,7 +129,7 @@ export default function DHSmain() {
                 <h4 className="section-title">Academics</h4>
                 <div className="row">
                     <Card link="/dhs-bhankrota/banner-content-image/scholarship" title="Scholarship" description="Banner Image, Content & Multiple Images"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/pedagogy" title="Pedagogy" description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/pedagogy" title="Pedagogy*" description="Banner Image, Content & Multiple Images"/>
                     <Card link="/dhs-bhankrota/banner-content-image/curriculum" title="Curriculum" description="Banner Image, Content & Multiple Images"/>
                     <Card link="/dhs-bhankrota/banner-content-image/foreign-language" title="Foreign Language" description="Banner Image, Content & Multiple Images"/>
                     <Card link="/dhs-bhankrota/content/career-counselling" title="Career Counselling" description="Only content"/>
@@ -143,7 +143,7 @@ export default function DHSmain() {
                     <Card link="/dhs-bhankrota/banner-content-image/music" title="Music"description="Banner Image, Content & Multiple Images"/>                    
                     <Card link="/dhs-bhankrota/banner-content/house-system" title="House System" description="Banner Image & Content"/>
                     <Card link="/dhs-bhankrota/banner-content-image/sports" title="Sports"description="Banner Image, Content & Multiple Images"/>
-                    <Card link="/dhs-bhankrota/banner-content-image/health-n-wellness" title="Health and Wellness"description="Banner Image, Content & Multiple Images"/>
+                    <Card link="/dhs-bhankrota/banner-content-image/health-and-well-being" title="Health and Wellness"description="Banner Image, Content & Multiple Images"/>
                 </div>
             </div>
             <div className="section">

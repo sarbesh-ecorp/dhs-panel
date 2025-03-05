@@ -27,7 +27,7 @@ export default function BoardManagement() {
                 setDesignation(response.data[0].designation);
                 setContent(response.data[0].content);
                 const fetchedImage = response.data[0].member_image ? 
-                    `http://localhost:5000/uploads/board-of-management/${response.data[0].member_image}` : null;
+                    `https://www.dharavhighschool.org/api/uploads/board-of-management/${response.data[0].member_image}` : null;
                 setImage(fetchedImage);
             } catch (error) {
                 setErrorMessage('Data not found');
@@ -119,7 +119,7 @@ export default function BoardManagement() {
                 </div>
             </div>
             <div className="mt-4">
-                <label className="form-label">Details (Semi-colon-Separated)</label>
+                <label className="form-label">Details (Semi-colon-Separated, Except Last Line)</label>
                 <textarea className="form-control" rows={3} placeholder="Enter details separated by semi-colons..." value={content} onChange={(e) => setContent(e.target.value)} required></textarea>
                 <div className="invalid-feedback">Content is required.</div>
             </div>

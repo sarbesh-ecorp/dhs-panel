@@ -33,9 +33,9 @@ export default function BannerContent() {
                 const response = await axiosInstance.get(`/banner-content/${extractedPath}/${apiUrl}`);
                 
                 const fetchedDesktop = response.data[0].desktop_banner ? 
-                    `http://localhost:5000/uploads/banner-content/${response.data[0].desktop_banner}` : null;
+                    `https://www.dharavhighschool.org/api/uploads/banner-content/${response.data[0].desktop_banner}` : null;
                 const fetchedMobile = response.data[0].mobile_banner ? 
-                    `http://localhost:5000/uploads/banner-content/${response.data[0].mobile_banner}` : null;
+                    `https://www.dharavhighschool.org/api/uploads/banner-content/${response.data[0].mobile_banner}` : null;
                 
                 setContent(response.data[0].content);
                 setMetaTitle(response.data[0].meta_title);

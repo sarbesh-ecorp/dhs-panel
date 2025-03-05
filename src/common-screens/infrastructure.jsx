@@ -3,7 +3,7 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import axiosInstance from "../utils/axiosInstance";
 import ErrorToast from "../utils/error";
 
-export default function ContentImageHeading() {
+export default function InfrastrucureAdd() {
     const {id} = useParams();
     const [contentLoading, setContentLoading] = useState(false); 
     const [loading, setLoading] = useState(false);
@@ -21,13 +21,14 @@ export default function ContentImageHeading() {
         const fetchData = async () => {            
             try {
                 setContentLoading(true);
-                const response = await axiosInstance.get(`/heading-content-image/${extractedPath}/${id}`);
+                const response = await axiosInstance.get(`/heading-content-image/infrastructure/byid/${id}`);
                 setHeading(response.data[0].heading);
                 setContent(response.data[0].content);
                 const fetchedImage = response.data[0].image ? 
                     `https://www.dharavhighschool.org/api/uploads/heading-content-image/${response.data[0].image}` : null;
                 setImage(fetchedImage);
             } catch (error) {
+                console.log(error)
                 setErrorMessage('Data not found');
             } finally {
                 setContentLoading(false);
@@ -61,17 +62,17 @@ export default function ContentImageHeading() {
             setValidated(true);
             return;
         }
-        const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}`);
+        const imageFile = await convertBlobToFile(image, `${extractedPath}-infrastructure`);
         const formData = new FormData();
         formData.append("website", extractedPath);
-        formData.append("content_type", id);
+        formData.append("content_type", 'infrastructure');
         formData.append("heading", heading);
         formData.append("content", content);
         formData.append("image", imageFile);
 
         try {
             setLoading(true);
-            const response = await axiosInstance.post(`/heading-content-image/${id}`, formData, {
+            const response = await axiosInstance.post(`/heading-content-image/infrastructure/${heading}`, formData, {
                 headers: { "Content-Type": "multipart/form-data" }
             });
             alert(response.data.message);
@@ -88,7 +89,7 @@ export default function ContentImageHeading() {
     <div className="mainContent">
         {errorMessage && <ErrorToast message={errorMessage} onClose={() => setErrorMessage("")} />}
             <div className="banner-header">
-                <h3>{id === 'about' ? 'About' : 'Infrastructure'} (Home Page) ({extractedPath})</h3>
+                <h3>Infrastructure (Home Page) ({extractedPath})</h3>
                 <button className="btn btn-secondary" onClick={() => navigate(-1)}>Back</button>
             </div>
             <div className="banner-card">
@@ -96,7 +97,7 @@ export default function ContentImageHeading() {
                 <form noValidate onSubmit={handleSubmit} className={validated ? "was-validated" : ""}>
                 <div className="col-md-6">
                     <label className="form-label">Heading</label>
-                    <input type="text" className="form-control" placeholder="Enter heading..." value={heading} onChange={(e) => setHeading(e.target.value)} required/>
+                    <input type="text" className="form-control" placeholder="Enter heading..." value={heading} onChange={(e) => setHeading(e.target.value)} required  readOnly={id !== 'new'}/>
                     <div className="invalid-feedback">Heading is required.</div>
                 </div>
                 <div className="mt-4">

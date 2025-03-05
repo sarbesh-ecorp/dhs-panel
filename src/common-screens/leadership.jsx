@@ -29,7 +29,7 @@ export default function Leadership() {
                 setContent(response.data[0].content);
                 setSchool(response.data[0].school);
                 const fetchedImage = response.data[0].member_image ? 
-                    `http://localhost:5000/uploads/leadership/${response.data[0].member_image}` : null;
+                    `https://www.dharavhighschool.org/api/uploads/leadership/${response.data[0].member_image}` : null;
                 setImage(fetchedImage);
             } catch (error) {
                 setErrorMessage('Data not found');

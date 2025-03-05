@@ -27,9 +27,9 @@ export default function BannerContentMultipleImage() {
                 const response = await axiosInstance.get(`/banner-content-images/${extractedPath}/${id}`);
                 
                 const fetchedDesktop = response.data[0].desktop_banner ? 
-                    `http://localhost:5000/uploads/banner-content-images/${response.data[0].desktop_banner}` : null;
+                    `https://www.dharavhighschool.org/api/uploads/banner-content-images/${response.data[0].desktop_banner}` : null;
                 const fetchedMobile = response.data[0].mobile_banner ? 
-                    `http://localhost:5000/uploads/banner-content-images/${response.data[0].mobile_banner}` : null;
+                    `https://www.dharavhighschool.org/api/uploads/banner-content-images/${response.data[0].mobile_banner}` : null;
                 
                 setContent(response.data[0].content);
                 setMetaTitle(response.data[0].meta_title);
@@ -115,7 +115,7 @@ export default function BannerContentMultipleImage() {
                         ? "Our Approach"
                         : id === "life-at-dharav" ? "Life At Dharav" : id === "school-campus"
                         ? "School Campus"
-                        : id === "labs" ? 'Labs' : id === "sports" ? 'Sports' : id === 'other-facilities' ? 'Other Facilities' : id === "primary" ? 'Primary' : id === 'pedagogy' ? 'Pedagogy' : id === 'technology' ? 'Technology' : id === 'visual-art' ? 'Visual Art' : id === 'performing-arts' ? 'Performing Arts' : id === 'music' ? 'Music' : id === 'health-n-wellness' ? 'Health and Wellness'
+                        : id === "labs" ? 'Labs' : id === "sports" ? 'Sports' : id === 'other-facilities' ? 'Other Facilities' : id === "primary" ? 'Primary' : id === 'pedagogy' ? 'Pedagogy' : id === 'technology' ? 'Technology' : id === 'visual-art' ? 'Visual Art' : id === 'performing-arts' ? 'Performing Arts' : id === 'music' ? 'Music' : id === 'health-and-well-being' ? 'Health and Well Being'
                         : id === "boarding-house" ? 'Boarding House' : id === "scholarship" ? 'Scholarship' : id === 'foreign-language' ? 'Foreign Language' : id === 'sports' ? 'Sports' : id === 'boarding-house' ? 'Boarding House' : id === 'a-day-in-life-of-boarder' ? 'A Day in Life of Boarder' : 'UNDEFINED' } ({extractedPath})
                 </h3>
                 <button className="btn btn-secondary" onClick={() => navigate(-1)}>

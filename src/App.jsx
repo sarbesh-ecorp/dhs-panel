@@ -16,6 +16,8 @@ import ManagementList from "./common-screens/management-list";
 import LeadershipList from "./common-screens/leadership-list";
 import Leadership from "./common-screens/leadership";
 import Enquiry from "./views/enquiry";
+import InfrastructureList from "./common-screens/infrastructure-list";
+import InfrastrucureAdd from "./common-screens/infrastructure";
 
 function AppContent() {
   const location = useLocation();
@@ -68,6 +70,8 @@ function AppContent() {
             <Route path="/dhs-gurugram/content-image-heading/:id" element={<ProtectedRoute><ContentImageHeading/></ProtectedRoute>} />
             <Route path="/dhs-gurugram/faq" element={<ProtectedRoute><FAQs /></ProtectedRoute>} />
             <Route path="/dhs-gurugram/faq/:id" element={<ProtectedRoute><AddFAQs /></ProtectedRoute>} />
+            <Route path="/dhs-gurugram/infrastructure" element={<ProtectedRoute><InfrastructureList /></ProtectedRoute>} />
+            <Route path="/dhs-gurugram/infrastructure/:id" element={<ProtectedRoute><InfrastrucureAdd /></ProtectedRoute>} />
           </>
         )}
 
@@ -85,6 +89,8 @@ function AppContent() {
             <Route path="/dhs-bhankrota/content-image-heading/:id" element={<ProtectedRoute><ContentImageHeading/></ProtectedRoute>} />
             <Route path="/dhs-bhankrota/faq" element={<ProtectedRoute><FAQs /></ProtectedRoute>} />
             <Route path="/dhs-bhankrota/faq/:id" element={<ProtectedRoute><AddFAQs /></ProtectedRoute>} />
+            <Route path="/dhs-bhankrota/infrastructure" element={<ProtectedRoute><InfrastructureList /></ProtectedRoute>} />
+            <Route path="/dhs-bhankrota/infrastructure/:id" element={<ProtectedRoute><InfrastrucureAdd /></ProtectedRoute>} />
           </>
         )}
 

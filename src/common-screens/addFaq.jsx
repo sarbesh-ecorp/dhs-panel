@@ -56,7 +56,7 @@ export default function AddFAQs() {
             else if (faq.question.length > 200) error.question = "Question is too long (max 200 characters)";
 
             if (!faq.answer.trim()) error.answer = "Answer is required";
-            else if (faq.answer.length > 1000) error.answer = "Answer is too long (max 1000 characters)";
+            else if (faq.answer.length > 5000) error.answer = "Answer is too long (max 5000 characters)";
 
             return error;
         });
