@@ -65,10 +65,7 @@ export default function Leadership() {
             setValidated(true);
             return;
         }
-        if (image && image.startsWith("blob:")) {
-            const image = await convertBlobToFile(image, `${extractedPath}-${id}-desktop_banner`);
-            formData.append("images", image);
-        }
+        
 
         // const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}-${name}`);
         const formData = new FormData();
@@ -78,6 +75,10 @@ export default function Leadership() {
         formData.append("content", content);
         // formData.append("image", imageFile);
         formData.append("school", school);
+        if (image && image.startsWith("blob:")) {
+            const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}-${name}`);
+            formData.append("image", imageFile);
+        }
 
         try {
             setLoading(true);

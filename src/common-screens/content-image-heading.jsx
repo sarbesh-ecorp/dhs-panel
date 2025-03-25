@@ -61,10 +61,7 @@ export default function ContentImageHeading() {
             setValidated(true);
             return;
         }
-        if (image && image.startsWith("blob:")) {
-            const image = await convertBlobToFile(image, `${extractedPath}-${id}-desktop_banner`);
-            formData.append("images", image);
-        }
+       
         // const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}`);
         const formData = new FormData();
         formData.append("website", extractedPath);
@@ -72,6 +69,10 @@ export default function ContentImageHeading() {
         formData.append("heading", heading);
         formData.append("content", content);
         // formData.append("image", imageFile);
+        if (image && image.startsWith("blob:")) {
+            const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}`);
+            formData.append("image", imageFile);
+        }
 
         try {
             setLoading(true);
