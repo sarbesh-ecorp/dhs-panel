@@ -61,13 +61,17 @@ export default function ContentImageHeading() {
             setValidated(true);
             return;
         }
-        const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}`);
+        if (image && image.startsWith("blob:")) {
+            const image = await convertBlobToFile(image, `${extractedPath}-${id}-desktop_banner`);
+            formData.append("images", image);
+        }
+        // const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}`);
         const formData = new FormData();
         formData.append("website", extractedPath);
         formData.append("content_type", id);
         formData.append("heading", heading);
         formData.append("content", content);
-        formData.append("image", imageFile);
+        // formData.append("image", imageFile);
 
         try {
             setLoading(true);

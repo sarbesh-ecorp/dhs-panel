@@ -65,14 +65,18 @@ export default function Leadership() {
             setValidated(true);
             return;
         }
+        if (image && image.startsWith("blob:")) {
+            const image = await convertBlobToFile(image, `${extractedPath}-${id}-desktop_banner`);
+            formData.append("images", image);
+        }
 
-        const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}-${name}`);
+        // const imageFile = await convertBlobToFile(image, `${extractedPath}-${id}-${name}`);
         const formData = new FormData();
         formData.append("website", extractedPath);
         formData.append("name", name);
         formData.append("designation", designation);
         formData.append("content", content);
-        formData.append("image", imageFile);
+        // formData.append("image", imageFile);
         formData.append("school", school);
 
         try {
