@@ -62,13 +62,17 @@ export default function InfrastrucureAdd() {
             setValidated(true);
             return;
         }
-        const imageFile = await convertBlobToFile(image, `${extractedPath}-infrastructure`);
+        if (image && image.startsWith("blob:")) {
+            const image = await convertBlobToFile(image, `${extractedPath}-${id}-desktop_banner`);
+            formData.append("images", image);
+        }
+        // const imageFile = await convertBlobToFile(image, `${extractedPath}-infrastructure`);
         const formData = new FormData();
         formData.append("website", extractedPath);
         formData.append("content_type", 'infrastructure');
         formData.append("heading", heading);
         formData.append("content", content);
-        formData.append("image", imageFile);
+        // formData.append("image", imageFile);
 
         try {
             setLoading(true);
