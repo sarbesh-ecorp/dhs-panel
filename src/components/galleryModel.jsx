@@ -4,6 +4,7 @@ import Button from "react-bootstrap/Button";
 import axiosInstance from "../utils/axiosInstance";
 import ErrorToast from "../utils/error";
 import { FaTimes } from "react-icons/fa";
+import axios from "axios";
 
 function GalleryModal({ show, handleClose, link }) {
     const website = link.split("/")[1];
@@ -103,10 +104,10 @@ function GalleryModal({ show, handleClose, link }) {
     const deleteData = async (imagePath) => {
         const isConfirmed = window.confirm("Are you sure you want to delete this item?");
         if (!isConfirmed) return;
-    
+        console.log(imagePath)
         try {
-            const reaponse = await axiosInstance.delete(`/banner-content-images/gallery-images/${imagePath}/${imageID}`);
-            console.log(reaponse)
+            const response = await axiosInstance.delete(`/banner-content-images/gallery-images/${encodeURIComponent(imagePath)}/${imageID}`);
+            console.log(response)
             fetchData();
         } catch (error) {
             console.log(error)
@@ -156,7 +157,7 @@ function GalleryModal({ show, handleClose, link }) {
                                     <img src={img} alt={`Fetched Preview ${index + 1}`} />
                                     <FaTimes
                                             className="delete-icon"
-                                            onClick={() => deleteData(img.slice(52))}
+                                            onClick={() => deleteData(img.slice(67))}
                                             title="Delete"
                                         />
                                 </div>
