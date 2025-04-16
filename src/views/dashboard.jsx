@@ -30,8 +30,8 @@ export default function Dashboard() {
                 {accessRights.includes('dhs-bhankrota') && (
                 <WorkplaceCard 
                     link="/dhs-bhankrota" 
-                    title="DHS Bhankrota" 
-                    description="Control operations at Bhankrota."
+                    title="DHS Ajmer Road Jaipur" 
+                    description="Control operations at Ajmer Road Jaipur."
                     icon={<Briefcase size={40} />}
                 />)}
                 {accessRights.includes('user-management') && (

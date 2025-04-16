@@ -441,3 +441,10 @@ svg {
 .gallery-btn:hover {
   background-color: #218838;
 }
+
+.login-background {
+  background-image: url(/dhs-panel/assets/image.webp);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+}

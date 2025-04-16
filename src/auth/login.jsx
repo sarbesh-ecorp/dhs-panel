@@ -34,10 +34,16 @@ export default function Login() {
   };
 
   return (
-  <div className="mainContent d-flex align-items-center justify-content-center vh-100 bg-light">
+  <div className="mainContent d-flex align-items-center justify-content-center vh-100 bg-light login-background">
     <div className="card shadow p-4 rounded" style={{ width: "400px" }}>
       <div className="card-body">
-        <h3 className="text-center mb-4">Admin Login</h3>
+        <img 
+        src="/dhs-panel/assets/logo.svg" 
+        alt="DHS Logo" 
+        style={{ width: "60px", height: "80px" }} 
+        className="mb-2 mx-auto d-block"
+      />
+        <h3 className="text-center mb-4">DHS Admin CRM Login</h3>
         <form noValidate onSubmit={handleLogin} className={validated ? "was-validated" : ""}>
           <div className="mb-3">
             <label className="form-label">Username</label>

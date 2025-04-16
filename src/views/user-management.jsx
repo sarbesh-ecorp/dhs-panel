@@ -17,7 +17,7 @@ export default function UserManagement() {
     const accessOptions = [
         { value: "dhs-main", label: "DHS MAIN" },
         { value: "dhs-gurugram", label: "DHS GURUGRAM" },
-        { value: "dhs-bhankrota", label: "DHS BHANKROTA" },
+        { value: "dhs-bhankrota", label: "DHS Ajmer Road Jaipur" },
         { value: "user-management", label: "USER MANAGEMENT"},
         { value: "enquiry", label: "ENQUIRY"}
     ];

@@ -12,7 +12,7 @@ export default function DHSmain() {
     return (
         <div className="mainContent">
             <div className="banner-header">
-                <h3>Choose Workplace ({extractedPath})</h3>
+                <h3>Choose Workplace ({extractedPath === 'dhs-bhankrota' ? 'dhs-ajmer-road' : extractedPath}-website)</h3>
                 <button className="btn btn-secondary" onClick={() => navigate("/dashboard")}>Back</button>
             </div>
             {extractedPath === 'dhs-main' && (<>

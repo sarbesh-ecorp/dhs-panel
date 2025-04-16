@@ -490,6 +490,9 @@ function Sidebar() {
 
       <div className="navi header-bottom">
         <ul className="list-inline">
+          <li><a href="#" onClick={(e) => {e.preventDefault(); alert('Under Development')}}><i className="fa-solid fa-lock"></i> <span className={isCollapsed ? 'hidden' : ''}>Change Password</span></a></li>
+        </ul>
+        <ul className="list-inline">
           <li><a href="#" onClick={logout}><i className="fa-solid fa-right-from-bracket"></i> <span className={isCollapsed ? 'hidden' : ''}>Logout</span></a></li>
         </ul>
       </div>
